@@ -1,0 +1,25 @@
+{
+    "questions": [
+        {
+            "number": 1,
+            "id": "q1_buildings",
+            "question": "Which two buildings does Gilly intend to enter?"
+
+        },
+        {
+            "number": 2,
+            "id": "q2_items",
+            "question": "What items did she acquire at the market and why?"
+        },
+        {
+            "number": 3,
+            "id": "q3_motive",
+            "question": "What is her motive?"
+        },
+        {
+            "number": 4,
+            "id": "q4_costume",
+            "question": "Which disguise items, if any, did you burn at Gilly's lodging?"
+        }
+    ]
+}
