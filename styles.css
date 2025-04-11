@@ -386,3 +386,61 @@ padding: 8px 15px;
   /* padding: 10px 5px; */
 }
 
+/* --- Attempted Styling for Default Audio Controls (WebKit/Blink Only) --- */
+
+/* Target the main audio element container (already possible) */
+audio[controls] {
+  width: 100%; /* Make it full width */
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: var(--paper-dark); /* Background for the whole element */
+  border: 1px solid var(--secondary);
+  border-radius: 4px;
+}
+
+/* Try to style the overall controls panel background */
+audio[controls]::-webkit-media-controls-panel {
+  background-color: var(--paper-dark); /* Match element background */
+  /* You might try other variables like --paper here */
+  border-radius: 4px;
+}
+
+/* Try to style the play button color (often an icon/mask, color might not apply directly) */
+audio[controls]::-webkit-media-controls-play-button {
+  background-color: var(--accent); /* Attempt to color the button background */
+  color: var(--paper); /* Attempt to color the icon (may not work) */
+  border-radius: 50%; /* May make the background circular */
+}
+/* Hover state for play button (if possible) */
+audio[controls]::-webkit-media-controls-play-button:hover {
+  background-color: var(--accent-hover);
+}
+
+
+/* Try to style the current time display text color */
+audio[controls]::-webkit-media-controls-current-time-display {
+  color: var(--primary);
+}
+
+/* Try to style the remaining time display text color */
+audio[controls]::-webkit-media-controls-time-remaining-display {
+  color: var(--primary);
+}
+
+/* Try to style the volume slider container */
+audio[controls]::-webkit-media-controls-volume-slider-container {
+  /* Basic container styling if needed */
+}
+
+/* Try to style the volume slider track */
+audio[controls]::-webkit-media-controls-volume-slider {
+  background-color: var(--secondary); /* Track background */
+  border-radius: 3px;
+  height: 6px; /* Adjust height */
+}
+
+/* Try to style the mute button */
+audio[controls]::-webkit-media-controls-mute-button {
+   /* Styling might be very limited */
+   border-radius: 50%;
+}

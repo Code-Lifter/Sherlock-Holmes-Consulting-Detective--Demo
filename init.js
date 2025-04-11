@@ -43,14 +43,26 @@ async function showIntroduction() {
     const formattedIntro = caseData.intro ? caseData.intro.replace(/\n/g, "<br>") : "";
     const formattedDate = caseData.date ? caseData.date.replace(/\n/g, "<br>") : "";
 
-    const introText = `
+    // --- MODIFICATION START ---
+    // Define the HTML for the audio player
+    const audioPlayerHTML = `
+        <audio src="media/Knightley Text to Speech (11 Labs).mp3" preload="auto" controls style="width: 100%; margin-bottom: 15px;"></audio>
+    `; // Added some bottom margin for spacing
+
+    // Combine audio player, date, and intro text (Audio player comes first)
+    const introContentHTML = `
+        ${audioPlayerHTML}
         ${formattedDate ? `<div class="date">${formattedDate}</div>` : ''}
         <p>${formattedIntro}</p>
     `;
+    // --- MODIFICATION END ---
 
     const currentTextDiv = document.getElementById("current-text");
     const optionsDiv = document.getElementById("options");
-    if (currentTextDiv) currentTextDiv.innerHTML = introText;
+
+    // Set the combined content
+    if (currentTextDiv) currentTextDiv.innerHTML = introContentHTML;
+
     if (optionsDiv) optionsDiv.innerHTML = ''; // Clear options when showing intro
     gameState.currentLocation = null; // Not at a specific location
 }
@@ -60,15 +72,13 @@ async function showCredits() {
         // This assumes credit.json is in the SAME folder as index.html
         const response = await fetch('credit.json');
         if (!response.ok) {
-            // Throws an error if the file wasn't found (404) or other HTTP issue
             throw new Error(`HTTP error! status: ${response.status} (${response.statusText})`);
         }
-        // This throws an error if the file content isn't valid JSON
         const credits = await response.json();
 
         // Format the credits into HTML
         let creditsHTML = `<h1 style="text-align: center;">Credits</h1>`;
-        creditsHTML += `<hr style="margin-bottom: 20px;">`; // Add separator
+        creditsHTML += `<hr style="margin-bottom: 20px;">`;
 
         // --- Game Credits ---
         creditsHTML += `<h2>Game Credits</h2>`;
@@ -94,7 +104,7 @@ async function showCredits() {
 
         // --- Website Credits (NEW SECTION) ---
         if (credits.website_creator) {
-             creditsHTML += `<hr style="margin-top: 30px; margin-bottom: 20px;">`; // Add separator
+             creditsHTML += `<hr style="margin-top: 30px; margin-bottom: 20px;">`;
              creditsHTML += `<h2>Web Adaptation Credits</h2>`;
              if (credits.website_creator.name) {
                   creditsHTML += `<p><strong>Created By:</strong> ${credits.website_creator.name}</p>`;
@@ -104,12 +114,11 @@ async function showCredits() {
              }
         }
 
-
         // Display the credits in the main text area
         const currentTextDiv = document.getElementById("current-text");
         const optionsDiv = document.getElementById("options");
         if (currentTextDiv) {
-            currentTextDiv.innerHTML = creditsHTML;
+            currentTextDiv.innerHTML = creditsHTML; // This overwrites the intro + audio
         }
         if (optionsDiv) {
             optionsDiv.innerHTML = ''; // Clear the options/actions area
@@ -117,9 +126,7 @@ async function showCredits() {
          gameState.currentLocation = null; // Indicate we're not in a game location
 
     } catch (error) {
-        // This logs the specific error to the console - PLEASE CHECK IT!
         console.error("Failed to load or display credits:", error);
-        // Display the generic error message to the user
         const currentTextDiv = document.getElementById("current-text");
          if (currentTextDiv) {
              currentTextDiv.innerHTML = "<p>Sorry, couldn't load the credits at this time.</p>";
@@ -142,13 +149,9 @@ async function showQuestions() {
 
         if (questionsData.questions && questionsData.questions.length > 0) {
             questionsData.questions.forEach(q => {
-                 // Using the structure from your questions.json
                 questionsHTML += `<div class="question" style="margin-bottom: 15px;">
                                       <p><strong>Question ${q.number}:</strong> ${q.question}</p>
                                   </div>`;
-                // Note: This only displays the questions themselves.
-                // It does not include logic for answering them, as that was part of the
-                // score.js functionality that was previously removed/changed.
             });
         } else {
             questionsHTML += `<p>No questions found in the file.</p>`;
@@ -158,7 +161,7 @@ async function showQuestions() {
         const currentTextDiv = document.getElementById("current-text");
         const optionsDiv = document.getElementById("options");
         if (currentTextDiv) {
-            currentTextDiv.innerHTML = questionsHTML;
+            currentTextDiv.innerHTML = questionsHTML; // This overwrites the intro + audio
         }
         if (optionsDiv) {
             optionsDiv.innerHTML = ''; // Clear the options/actions area
@@ -167,7 +170,6 @@ async function showQuestions() {
 
     } catch (error) {
         console.error("Failed to load or display questions:", error);
-        // Display an error message to the user
         const currentTextDiv = document.getElementById("current-text");
          if (currentTextDiv) {
              currentTextDiv.innerHTML = "<p>Sorry, couldn't load the questions at this time.</p>";

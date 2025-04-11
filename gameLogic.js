@@ -10,6 +10,13 @@ function handleLocationSelect(address) {
 
 // VISIT LOCATION FUNCTION (Ensure previous fix is included)
 async function visitLocation(address) {
+    // --- ADD THIS AT THE START ---
+    const introAudio = document.getElementById('intro-audio');
+    if (introAudio && !introAudio.paused) { // Check if it's playing
+        introAudio.pause(); // Pause the audio
+    }
+    // --- END ADD ---
+
     if (gameState.lockedLocations.has(address)) {
         showNotification(`You cannot return to ${address}.`, 'error');
         return;
