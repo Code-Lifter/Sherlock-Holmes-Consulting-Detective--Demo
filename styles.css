@@ -324,3 +324,65 @@ padding: 8px 15px;
 /* Add other button styles as needed */
 }
 
+/* ... existing styles ... */
+
+/* Media query for screens 600px or less (adjust as needed)  */
+@media only screen and (max-width: 600px) {
+    body {
+        padding: 10px; /* Reduce body padding  */
+        font-size: 16px; /* Slightly smaller base font  */
+    }
+
+    h1 {
+        font-size: 3em; /* Smaller heading  */
+        margin-bottom: 0.3em;
+    }
+
+    h2 {
+        font-size: 2.5em;
+    }
+
+    .game-container {
+        grid-template-columns: 1fr; /* Stack the story and map areas  */
+        grid-template-rows: auto auto;
+        gap: 20px;
+    }
+
+    .tool-box {
+        position: static; /* No sticky positioning on small screens  */
+        margin-bottom: 20px; /* Add some spacing below the tool box */
+        top: auto;
+    }
+
+    button, #locations-dropdown {
+        padding: 10px 20px; /* Slightly smaller button padding  */
+        font-size: 1em;
+    }
+
+    .current-text {
+        padding: 20px; /* Adjust padding for text area  */
+    }
+
+    .letters-area {
+        justify-content: flex-start; /* Align letters to the left */
+    }
+
+    /* More specific adjustments as needed  */
+}
+
+/* Styles for the 2x2 button grid */
+.tool-grid {
+  display: grid; /* Use CSS Grid */
+  grid-template-columns: 1fr 1fr; /* Create two equal-width columns */
+  gap: 8px; /* Adjust the space between buttons */
+  margin: 8px 0; /* Add some margin above/below the grid */
+}
+
+/* Optional: Adjust button styling within the grid if needed */
+.tool-grid button {
+  width: 100%; /* Make buttons fill their grid cell */
+  margin: 0; /* Override the default button margin */
+  /* You might want to adjust padding if the text looks cramped */
+  /* padding: 10px 5px; */
+}
+

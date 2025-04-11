@@ -26,11 +26,13 @@
         <div class="tool-box">
           <h3 class="tool-title">Investigation Tools</h3>
           <button onclick="showIntroduction()">Introduction</button>
-          <button onclick="openMap()">Map</button>
-          <button onclick="openNewspaper()">Newspaper</button>
-          <button onclick="openDirectory()">Directory</button>
-          <button onclick="openInformants()">Informants</button>
 
+          <div class="tool-grid">
+            <button onclick="openMap()">🗺️ Map</button>
+            <button onclick="openNewspaper()">📰 Newspaper</button>
+            <button onclick="openDirectory()">📖 Directory</button>
+            <button onclick="openInformants()">👥 Informants</button>
+          </div>
           <div class="dropdown">
             <select
               id="locations-dropdown"
@@ -48,7 +50,7 @@
           </div>
           <div class="progress-box">
             <p>Leads followed: <span id="leads-count">0</span></p>
-            <button onclick="showQuestions()">Questions</button>            
+            <button onclick="showQuestions()">Questions</button>
             <button onclick="solveCase()">Solve the Case</button>
             <button onclick="showCredits()">Credits</button>
           </div>
@@ -57,6 +59,10 @@
     </div>
 
     <script src="score.js"></script>
-    <script src="script.js"></script>
+    <script src="gameState.js"></script>
+    <script src="ui.js"></script>
+    <script src="tools.js"></script>
+    <script src="gameLogic.js"></script>
+    <script src="init.js"></script>
   </body>
 </html>
