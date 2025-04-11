@@ -1,6 +1,6 @@
 # SHCD-Demo
 
-I'm a big fan of the Sherlock Holmes Consulting Detective (SHCD) games, and I'm working on a website using the free demo case. I'm using my coding skills, with a lot of help from AI tools like Claude and Gemini 2.5.
+I'm a big fan of the Sherlock Holmes Consulting Detective (SHCD) games, and I'm working on a website using the free demo case.
 
 If people are interested, I might create more sites based on other fan-made cases.
 
