@@ -33,6 +33,7 @@ async function loadGameData() {
 
 // --- Display Functions --- (Keep showIntroduction, showCredits)
 async function showIntroduction() {
+    closeToolbox(); // <<< ADDED
     // Use caseData loaded during initializeGame()
     if (!caseData || !caseData.intro) {
         console.error("Introduction data not loaded.");
@@ -68,6 +69,7 @@ async function showIntroduction() {
 }
 
 async function showCredits() {
+    closeToolbox(); // <<< ADDED
     try {
         // This assumes credit.json is in the SAME folder as index.html
         const response = await fetch('credit.json');
@@ -136,6 +138,7 @@ async function showCredits() {
 
 // --- Function to Show Questions ---
 async function showQuestions() {
+    closeToolbox(); // <<< ADDED
     try {
         const response = await fetch('questions.json'); // Fetch the questions data
         if (!response.ok) {

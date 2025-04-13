@@ -5,8 +5,8 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
       rel="stylesheet" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="directory.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap"
       rel="stylesheet" />
@@ -23,8 +23,9 @@
         <div id="options"></div>
       </div>
       <div class="map-area">
-        <div class="tool-box">
-          <h3 class="tool-title">Investigation Tools</h3>
+        <button id="hamburger-button" class="hamburger-button" aria-label="Toggle tools menu" aria-expanded="false">
+          &#9776; </button>
+        <div class="tool-box" id="tool-box"> <h3 class="tool-title">Investigation Tools</h3>
           <button onclick="showIntroduction()">Introduction</button>
 
           <div class="tool-grid">
@@ -64,5 +65,6 @@
     <script src="tools.js"></script>
     <script src="gameLogic.js"></script>
     <script src="init.js"></script>
+    <script src="mobileNav.js"></script> 
   </body>
 </html>

@@ -1,6 +1,14 @@
 // --- Core Logic ---
 
 function handleLocationSelect(address) {
+    // --- Ensure toolbox closes on mobile ---
+    if (typeof closeToolbox === 'function') { // Check if function exists
+      closeToolbox();
+    } else {
+      console.warn('closeToolbox function not found when selecting location.');
+    }
+    // --- End modification ---
+
     if (!address) return;
     visitLocation(address);
     // Reset dropdown selection after visiting
@@ -38,10 +46,13 @@ async function visitLocation(address) {
         updateLeadsCountDisplay();
         gameState.visitedLocations.add(address);
         // Update the specific option's class in the dropdown AFTER it's populated
-        const dropdownOption = document.querySelector(`#locations-dropdown option[value="${address}"]`);
-        if (dropdownOption) {
-            dropdownOption.classList.add("visited-location");
-        }
+        // Use setTimeout to ensure dropdown is populated if load is async
+        setTimeout(() => {
+             const dropdownOption = document.querySelector(`#locations-dropdown option[value="${address}"]`);
+             if (dropdownOption) {
+                dropdownOption.classList.add("visited-location");
+             }
+        }, 0);
     }
 
     // --- Display Logic ---
@@ -114,6 +125,9 @@ async function processConditionsAndActions(conditions, displayElement, optionsEl
         if (condition.check === "requiresLetter") {
             conditionMet = gameState.letters.has(condition.letter);
         }
+         else if (condition.check === "flagSet") { // Example: Check a flag
+             conditionMet = !!gameState.flags[condition.flagName]; // Check if flag is truthy
+         }
         // *** Add more 'else if (condition.check === "...")' for other types of checks (e.g., flags) ***
         else if (!condition.check) { // If no check specified, assume met
             conditionMet = true;
@@ -245,11 +259,14 @@ async function processOldConditionalText(conditionalTextArray, displayElement, o
             if (condition.locationLock && !gameState.lockedLocations.has(gameState.currentLocation)) {
                 gameState.lockedLocations.add(gameState.currentLocation);
                 showNotification(`${gameState.currentLocation} is now locked.`, 'info');
-                const dropdownOption = document.querySelector(`#locations-dropdown option[value="${gameState.currentLocation}"]`);
-                if (dropdownOption) {
-                    dropdownOption.disabled = true;
-                    dropdownOption.classList.add("locked-location");
-                }
+                 // Use setTimeout to ensure dropdown is populated if load is async
+                setTimeout(() => {
+                    const dropdownOption = document.querySelector(`#locations-dropdown option[value="${gameState.currentLocation}"]`);
+                    if (dropdownOption) {
+                        dropdownOption.disabled = true;
+                        dropdownOption.classList.add("locked-location");
+                    }
+                 }, 0);
             }
             // Collect actions
             if (condition.actions) {
@@ -293,11 +310,14 @@ async function handleAction(actionId, consequences = {}) { // Default consequenc
             gameState.lockedLocations.add(gameState.currentLocation);
             showNotification(`${gameState.currentLocation} is now locked.`, 'info');
             // Update dropdown immediately
-            const dropdownOption = document.querySelector(`#locations-dropdown option[value="${gameState.currentLocation}"]`);
-            if (dropdownOption) {
-                dropdownOption.disabled = true;
-                dropdownOption.classList.add("locked-location");
-            }
+             // Use setTimeout to ensure dropdown is populated if load is async
+             setTimeout(() => {
+                 const dropdownOption = document.querySelector(`#locations-dropdown option[value="${gameState.currentLocation}"]`);
+                 if (dropdownOption) {
+                    dropdownOption.disabled = true;
+                    dropdownOption.classList.add("locked-location");
+                 }
+             }, 0);
             // Locking might require re-rendering buttons if the break-in button should disable
             needsReRender = true;
         }
@@ -316,6 +336,8 @@ async function handleAction(actionId, consequences = {}) { // Default consequenc
                  needsReRender = true; // Need to disable other burn choice buttons
              } else {
                   showNotification(`You already made a choice here.`, 'error');
+                  // Don't proceed further if choice already made
+                  return;
              }
         }
         // Add logic for other types of choices if necessary
@@ -332,16 +354,23 @@ async function handleAction(actionId, consequences = {}) { // Default consequenc
                   disableActionButtons(optionsDiv, actionId, consequences);
               }
          }
-        return;
+        return; // Sequence handled, stop further processing here
     }
 
     if (consequences.endsInteraction) {
         // Clear options, maybe show a final message if not triggering a sequence
-        document.getElementById("options").innerHTML = '';
+        const optionsDiv = document.getElementById("options");
+        if(optionsDiv) {
+            optionsDiv.innerHTML = '';
+            // Consider adding a default "Leave" button or similar if interaction just ends
+            // optionsDiv.innerHTML = '<button onclick="showIntroduction()">Return</button>';
+        }
     }
 
 
     // --- Re-render/Disable Location Buttons if needed ---
+    // This part is crucial for updating button states AFTER an action is processed
+    // but BEFORE leaving the function, especially if a sequence wasn't triggered.
     if (needsReRender) {
         const optionsDiv = document.getElementById("options");
         if (optionsDiv) {
@@ -371,6 +400,7 @@ async function displaySequence(sequenceId) {
         if (displayElement.innerHTML.length > 0 && !displayElement.innerHTML.endsWith('</p>') && !displayElement.innerHTML.endsWith('<hr>')) {
             displayElement.innerHTML += '<hr>';
         }
+        // Sanitize text before adding to innerHTML if needed, or use textContent if no HTML is intended
         displayElement.innerHTML += `<p>${sequence.text.replace(/\n/g, "<br>")}</p>`;
     }
 
@@ -381,6 +411,11 @@ async function displaySequence(sequenceId) {
             gameState.flags[key] = sequence.updates[key];
         });
         console.log("Updated gameState.flags from sequence:", gameState.flags);
+         // Check if updates include flags that might require UI refresh (e.g. disabling buttons)
+        if(Object.keys(sequence.updates).some(key => key.startsWith('burnedOneUniformChoice'))) {
+             // Need to re-evaluate buttons after this sequence if flags were set
+             needsReRender = true; // Assuming needsReRender is accessible or passed
+        }
     }
 
     // Display sequence actions (if any)
@@ -393,7 +428,15 @@ async function displaySequence(sequenceId) {
         sequence.actions.forEach(action => {
             renderAction(action, optionsElement); // Reuse the renderAction helper
         });
-    } else {
-         optionsElement.innerHTML = '<button onclick="showIntroduction()">Leave Location</button>'; // Example: Add leave button after sequence ends with no actions
+    } else if (optionsElement) {
+         // Provide a way to leave if the sequence ends with no actions
+         optionsElement.innerHTML = '<button onclick="showIntroduction()">Leave Location</button>';
     }
+
+    // If sequence updates potentially require button disabling (e.g., the burn choice flag)
+    // We need to re-render the buttons to reflect the new state
+     if (optionsElement && typeof disableActionButtons === 'function' && sequence.id === 'leave_after_burning_68wc') {
+         // Pass a dummy actionId or refine disableActionButtons if needed
+         disableActionButtons(optionsElement, 'sequence_update', {});
+     }
 }

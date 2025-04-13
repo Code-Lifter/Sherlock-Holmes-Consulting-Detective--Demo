@@ -4,19 +4,40 @@
  * then displays the solution, Holmes' summary, and the player's results.
  */
 async function solveCase() {
+    // --- Ensure toolbox closes on mobile ---
+    if (typeof closeToolbox === 'function') { // Check if function exists
+      closeToolbox();
+    } else {
+      console.warn('closeToolbox function not found when solving case.');
+    }
+    // --- End modification ---
+
     try {
         // Ensure caseData is loaded (assuming it's global or accessible)
         if (!caseData || !caseData.outro || !caseData.case_summary) {
             console.error("Case introduction or summary data not loaded.");
             // Attempt to load it if not present - adjust path if needed
             try {
-                const caseIntroResponse = await fetch("caseIntro.json");
-                if (!caseIntroResponse.ok) throw new Error(`HTTP error! status: ${caseIntroResponse.status}`);
-                caseData = await caseIntroResponse.json();
-                console.log("Case data loaded within solveCase.");
+                // Ensure caseData is accessible; might need to be passed or loaded differently
+                // This assumes caseData is already loaded globally by init.js
+                if (typeof caseData === 'undefined' || !caseData.outro) {
+                     console.log("Attempting to fetch caseIntro.json within solveCase...");
+                     const caseIntroResponse = await fetch("caseIntro.json");
+                     if (!caseIntroResponse.ok) throw new Error(`HTTP error! status: ${caseIntroResponse.status}`);
+                     // Potentially merge with existing caseData or assign if fully missing
+                     let loadedCaseData = await caseIntroResponse.json();
+                     // If caseData exists but lacks outro, merge, otherwise assign
+                     if (typeof caseData !== 'undefined') {
+                        Object.assign(caseData, loadedCaseData);
+                     } else {
+                        caseData = loadedCaseData;
+                     }
+                     console.log("Case data loaded/updated within solveCase.");
+                }
             } catch (loadError) {
                 console.error("Failed to load caseIntro.json within solveCase:", loadError);
-                document.getElementById("current-text").innerHTML = "<p>Error loading case conclusion data. Please try again.</p>";
+                const currentTextDiv = document.getElementById("current-text");
+                if (currentTextDiv) currentTextDiv.innerHTML = "<p>Error loading case conclusion data. Please try again.</p>";
                 return; // Stop execution if essential data is missing
             }
         }
@@ -94,8 +115,8 @@ async function solveCase() {
              // Player burned the right item but didn't find the clue confirming it was the one to burn
              scoreExplanation.push(`<li>❌ Burned Footman's Uniform but Missed Clue (+${POINTS_BURN_UNIFORM} points possible if clue found)</li>`);
         } else if (gameState.flags.item_burned_68wc) { // Player burned a uniform, but it was the wrong one
-             const burnedItemName = gameState.flags.item_burned_68wc.split('_')[1]; // e.g., "warden" or "cook"
-             scoreExplanation.push(`<li>❌ Burned incorrect item (${burnedItemName} uniform): +0 points (Correct: Footman's Uniform, +${POINTS_BURN_UNIFORM} points possible with clue)</li>`);
+             const burnedItemName = (gameState.flags.item_burned_68wc.split('_')[1] || "unknown").replace(/_/g, ' '); // e.g., "warden uniform" or "cook uniform"
+             scoreExplanation.push(`<li>❌ Burned incorrect item (${burnedItemName}): +0 points (Correct: Footman's Uniform, +${POINTS_BURN_UNIFORM} points possible with clue)</li>`);
         } else { // Player didn't make a choice or burn any specific uniform item
             scoreExplanation.push(`<li>❌ Missed: Burn correct Uniform (Footman's) (+${POINTS_BURN_UNIFORM} points possible with clue)</li>`);
         }
@@ -143,12 +164,16 @@ async function solveCase() {
                  <hr style="border-top: 2px solid var(--primary); margin: 20px 0;">
             </div>`;
 
-        document.getElementById("current-text").innerHTML = resultText;
-        document.getElementById("options").innerHTML = ''; // Clear options/actions area
+        const currentTextDiv = document.getElementById("current-text");
+        const optionsDiv = document.getElementById("options");
+
+        if(currentTextDiv) currentTextDiv.innerHTML = resultText;
+        if(optionsDiv) optionsDiv.innerHTML = ''; // Clear options/actions area
 
     } catch (error) {
         console.error("Error solving the case:", error);
-        document.getElementById("current-text").innerHTML = "<p>Error displaying the case conclusion. Please check the console.</p>";
+        const currentTextDiv = document.getElementById("current-text");
+        if (currentTextDiv) currentTextDiv.innerHTML = "<p>Error displaying the case conclusion. Please check the console.</p>";
     }
 }
 
