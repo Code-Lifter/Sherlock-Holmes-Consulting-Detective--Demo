@@ -9,7 +9,7 @@ function openMap() {
         window.open(mapImagePath, '_blank');
     } else {
         console.error("Map image path is not set or is still the placeholder.");
-        alert("Map image path needs to be configured in script.js");
+        alert("Configure the map image path in tools.js.");
     }
 }
 
@@ -18,7 +18,7 @@ function openNewspaper() {
         window.open(newspaperImagePath, '_blank');
     } else {
         console.error("Newspaper image path is not set or is still the placeholder.");
-        alert("Newspaper image path needs to be configured in script.js");
+        alert("Configure the newspaper image path in tools.js.");
     }
 }
 
@@ -27,7 +27,7 @@ function openDirectory() {
         window.open(directoryPath, '_blank');
     } else {
         console.error("Directory file path is not set.");
-        alert("Directory file path needs to be configured in script.js");
+        alert("Configure the directory file path in tools.js.");
     }
 }
 
@@ -36,6 +36,6 @@ function openInformants() {
         window.open(informantsPath, '_blank');
     } else {
         console.error("Informants file path is not set.");
-        alert("Informants file path needs to be configured in script.js");
+        alert("Configure the informants file path in tools.js.");
     }
 }
