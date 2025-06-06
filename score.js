@@ -191,3 +191,8 @@ function getRating(score) {
     // Score 0 to 4 or less
     return "At least you tried.";
 }
+
+// Export for Node.js testing environment
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { getRating };
+}

@@ -11,3 +11,12 @@ Just to be clear, I'm not planning to replicate the actual cases in the full box
 https://agonizingfool.github.io/SHCD-Demo/
 
 Join me on my Discord: https://discord.gg/sfrkpCPj
+
+## Running tests
+
+The repository includes a small Node.js test that verifies the score rating
+logic. Run it with the following command:
+
+```bash
+node tests/getRating.test.js
+```
