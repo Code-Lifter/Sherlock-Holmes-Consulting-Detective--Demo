@@ -345,15 +345,15 @@ async function handleAction(actionId, consequences = {}) { // Default consequenc
 
     // Handle triggering sequences AFTER processing other consequences for THIS action
     if (consequences.triggersSequence) {
-        await displaySequence(consequences.triggersSequence);
+        const seqNeedsReRender = await displaySequence(consequences.triggersSequence);
         // Sequence display handles rendering, so return unless re-render needed for *this* action's effects
-         if (needsReRender) {
-             // Re-render/disable buttons AFTER sequence is displayed (if needed for locking etc.)
-             const optionsDiv = document.getElementById("options");
-              if (optionsDiv) {
-                  disableActionButtons(optionsDiv, actionId, consequences);
-              }
-         }
+        if (needsReRender || seqNeedsReRender) {
+            // Re-render/disable buttons AFTER sequence is displayed (if needed for locking etc.)
+            const optionsDiv = document.getElementById("options");
+            if (optionsDiv) {
+                disableActionButtons(optionsDiv, actionId, consequences);
+            }
+        }
         return; // Sequence handled, stop further processing here
     }
 
@@ -392,7 +392,9 @@ async function displaySequence(sequenceId) {
     const sequence = locationData.sequences[sequenceId];
     const displayElement = document.getElementById("current-text");
     const optionsElement = document.getElementById("options");
-    if (!displayElement || !optionsElement) return;
+    if (!displayElement || !optionsElement) return false;
+
+    let needsReRender = false;
 
     // Append sequence text
     if (sequence.text) {
@@ -433,10 +435,5 @@ async function displaySequence(sequenceId) {
          optionsElement.innerHTML = '<button onclick="showIntroduction()">Leave Location</button>';
     }
 
-    // If sequence updates potentially require button disabling (e.g., the burn choice flag)
-    // We need to re-render the buttons to reflect the new state
-     if (optionsElement && typeof disableActionButtons === 'function' && sequence.id === 'leave_after_burning_68wc') {
-         // Pass a dummy actionId or refine disableActionButtons if needed
-         disableActionButtons(optionsElement, 'sequence_update', {});
-     }
+    return needsReRender;
 }
