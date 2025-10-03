@@ -8,6 +8,6 @@ I've always found the physical edition a bit frustrating. Even when I try to pla
 
 Just to be clear, I'm not planning to replicate the actual cases in the full boxed game. That would be unethical and diminish the value of the physical edition. I also want to respect copyright and avoid taking any revenue away from the talented developers who create these high-quality games.
 
-https://agonizingfool.github.io/SHCD-Demo/
+https://agonizingfool.github.io/Sherlock-Holmes-Consulting-Detective--Demo/
 
 Join me on my Discord: https://discord.gg/sfrkpCPj
