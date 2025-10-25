@@ -345,15 +345,14 @@ async function handleAction(actionId, consequences = {}) { // Default consequenc
 
     // Handle triggering sequences AFTER processing other consequences for THIS action
     if (consequences.triggersSequence) {
-        await displaySequence(consequences.triggersSequence);
-        // Sequence display handles rendering, so return unless re-render needed for *this* action's effects
-         if (needsReRender) {
-             // Re-render/disable buttons AFTER sequence is displayed (if needed for locking etc.)
-             const optionsDiv = document.getElementById("options");
-              if (optionsDiv) {
-                  disableActionButtons(optionsDiv, actionId, consequences);
-              }
-         }
+        const sequenceNeedsRender = await displaySequence(consequences.triggersSequence);
+        // Re-render/disable buttons if either the action or the triggered sequence requires it
+        if (sequenceNeedsRender || needsReRender) {
+            const optionsDiv = document.getElementById("options");
+            if (optionsDiv) {
+                disableActionButtons(optionsDiv, actionId, consequences);
+            }
+        }
         return; // Sequence handled, stop further processing here
     }
 
@@ -382,6 +381,7 @@ async function handleAction(actionId, consequences = {}) { // Default consequenc
 
 // displaySequence function (Keep as previously provided)
 async function displaySequence(sequenceId) {
+    let needsReRender = false; // Flag if UI needs update after this sequence
     console.log(`Displaying sequence: ${sequenceId}`);
     const locationData = gameLocations[gameState.currentLocation];
     if (!locationData || !locationData.sequences || !locationData.sequences[sequenceId]) {
@@ -411,11 +411,8 @@ async function displaySequence(sequenceId) {
             gameState.flags[key] = sequence.updates[key];
         });
         console.log("Updated gameState.flags from sequence:", gameState.flags);
-         // Check if updates include flags that might require UI refresh (e.g. disabling buttons)
-        if(Object.keys(sequence.updates).some(key => key.startsWith('burnedOneUniformChoice'))) {
-             // Need to re-evaluate buttons after this sequence if flags were set
-             needsReRender = true; // Assuming needsReRender is accessible or passed
-        }
+        // Any updates may change available actions, so re-render after displaying
+        needsReRender = true;
     }
 
     // Display sequence actions (if any)
@@ -439,4 +436,6 @@ async function displaySequence(sequenceId) {
          // Pass a dummy actionId or refine disableActionButtons if needed
          disableActionButtons(optionsElement, 'sequence_update', {});
      }
+
+    return needsReRender;
 }

@@ -497,15 +497,14 @@ async function handleAction(actionId, consequences = {}) { // Default consequenc
 
     // Handle triggering sequences AFTER processing other consequences for THIS action
     if (consequences.triggersSequence) {
-        await displaySequence(consequences.triggersSequence);
-        // Sequence display handles rendering, so return unless re-render needed for *this* action's effects
-         if (needsReRender) {
-             // Re-render/disable buttons AFTER sequence is displayed (if needed for locking etc.)
-             const optionsDiv = document.getElementById("options");
-              if (optionsDiv) {
-                  disableActionButtons(optionsDiv, actionId, consequences);
-              }
-         }
+        const sequenceNeedsRender = await displaySequence(consequences.triggersSequence);
+        // Re-render/disable buttons if either the action or the triggered sequence requires it
+        if (sequenceNeedsRender || needsReRender) {
+            const optionsDiv = document.getElementById("options");
+            if (optionsDiv) {
+                disableActionButtons(optionsDiv, actionId, consequences);
+            }
+        }
         return;
     }
 
@@ -543,6 +542,7 @@ function disableActionButtons(optionsDiv, actionId, consequences) {
 
 // displaySequence function (Keep as previously provided)
 async function displaySequence(sequenceId) {
+    let needsReRender = false; // Flag if UI needs update after this sequence
     console.log(`Displaying sequence: ${sequenceId}`);
     const locationData = gameLocations[gameState.currentLocation];
     if (!locationData || !locationData.sequences || !locationData.sequences[sequenceId]) {
@@ -571,6 +571,8 @@ async function displaySequence(sequenceId) {
             gameState.flags[key] = sequence.updates[key];
         });
         console.log("Updated gameState.flags from sequence:", gameState.flags);
+        // Any updates may change available actions, so re-render after displaying
+        needsReRender = true;
     }
 
     // Display sequence actions (if any)
@@ -586,6 +588,8 @@ async function displaySequence(sequenceId) {
     } else {
          optionsElement.innerHTML = '<button onclick="showIntroduction()">Leave Location</button>'; // Example: Add leave button after sequence ends with no actions
     }
+
+    return needsReRender;
 }
 
 
