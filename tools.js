@@ -2,7 +2,7 @@
 const mapImagePath = 'media/images/map.png';
 const newspaperImagePath = 'media/images/newspaper.jpeg';
 const directoryPath = 'media/images/directory.jpeg';
-const informantsPath = 'media/images/infomants.jpeg';
+const informantsPath = 'media/images/informants.jpeg';
 
 function openMap() {
     if (mapImagePath && mapImagePath !== 'images/map.jpg') {
