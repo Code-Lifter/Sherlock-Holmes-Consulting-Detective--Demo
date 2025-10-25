@@ -10,3 +10,12 @@ I've always found the physical edition a bit frustrating. Even when I try to pla
 Just to be clear, I'm not planning to replicate the actual cases in the full boxed game. That would be unethical and diminish the value of the physical edition. I also want to respect copyright and avoid taking any revenue away from the talented developers who create these high-quality games.
  
 Join me on my Discord: https://discord.gg/sfrkpCPj
+
+## Running tests
+
+The repository includes a small Node.js test that verifies the score rating
+logic. Run it with the following command:
+
+```bash
+node tests/getRating.test.js
+```
