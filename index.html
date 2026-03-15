@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "rgro0bkeat");
+</script>
+    
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YKCBVFKMZY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YKCBVFKMZY');
+</script>
+    
+    <title>SHCD: Demo</title>
+    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <div style="text-align: center; margin: 15px 0;">
+      <a href="/" style="background: var(--secondary); color: var(--paper); padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; font-family: 'Crimson Text', serif;">🏠 Home</a>
+    </div>
+    <div id="notifications"></div>
+    <div class="case-title-box">
+      <h2 id="case-title">Loading...</h2>
+    </div>
+    <div class="game-container">
+      <div class="story-area">
+        <div id="current-text" class="current-text distorted-ink"></div>
+        <div id="options"></div>
+      </div>
+      <div class="map-area">
+        <button id="hamburger-button" class="hamburger-button" aria-label="Toggle tools menu" aria-expanded="false">
+          &#9776; </button>
+        <div class="tool-box" id="tool-box"> <h3 class="tool-title">Investigation Tools</h3>
+          <button onclick="showIntroduction()">Introduction</button>
+
+          <div class="tool-grid">
+            <button onclick="openMap()">🗺️ Map</button>
+            <button onclick="openNewspaper()">📰 Newspaper</button>
+            <button onclick="openDirectory()">📖 Directory</button>
+            <button onclick="openInformants()">👥 Informants</button>
+          </div>
+          <div class="dropdown">
+            <select
+              id="locations-dropdown"
+              onchange="handleLocationSelect(this.value)">
+              <option value="">Select a location to visit...</option>
+            </select>
+          </div>
+          <div class="letters-box">
+            <h4 style="margin: 0 0 10px 0">Letters Found</h4>
+            <div class="letters-area">
+              <div id="letter-A" class="letter">A</div>
+              <div id="letter-B" class="letter">B</div>
+              <div id="letter-C" class="letter">C</div>
+            </div>
+          </div>
+          <div class="progress-box">
+            <p>Leads followed: <span id="leads-count">0</span></p>
+            <button onclick="showQuestions()">Questions</button>
+            <button onclick="solveCase()">Solve the Case</button>
+            <button onclick="showCredits()">Credits</button>
+          </div>
+          <div class="system-box" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--secondary);">
+            <button onclick="resetGame()" style="background-color: #8b2222; margin-bottom: 10px;">⚠️ Reset Game</button>
+            <div class="tool-grid">
+              <button onclick="exportSave()">💾 Save JSON</button>
+              <button onclick="document.getElementById('import-file').click()">📂 Load JSON</button>
+            </div>
+            <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importSave(event)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/score.js"></script>
+    <script src="./js/gameState.js"></script>
+    <script src="./js/ui.js"></script>
+    <script src="./js/tools.js"></script>
+    <script src="./js/gameLogic.js"></script>
+    <script src="./js/init.js"></script>
+    <script src="./js/mobileNav.js"></script> 
+  </body>
+</html>

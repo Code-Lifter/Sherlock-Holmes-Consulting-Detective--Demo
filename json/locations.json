@@ -1,0 +1,217 @@
+{
+    "17 WC": {
+      "address": "17 WC",
+      "text": "Gillian Edith Niles. Born February 29, 1860 (current address unknown). One sister, Lydia Niles, born June 3, 1858 (address on record: 33 WC)."
+    },
+    "19 WC": {
+      "address": "19 WC",
+      "text": "“Gilly Niles? My, she knows how to hold a grudge, that one. Not been in today, but two weeks ago she was making eyes at Aloysius. Her sister Lydia comes in occasionally too.”"
+    },
+    "20 WC": {
+      "address": "20 WC",
+      "text": "An arch runs from the station wall to an open window."
+    },
+    "21 WC": {
+      "address": "21 WC",
+      "text": "We speak to one man who thinks he's seen Gilly on Maiden Lane."
+    },
+    "22 WC": {
+      "address": "22 WC",
+      "text": "The doorman refuses to send street children to speak to a guest. However, Wiggins distracts him while we glimpse the room log, and a moment later we are at Mr Sartori’s room on the upper floor. “Hello,” says Wiggins, “We’re with hotel security.” Mr Sartori squints, then removes his glasses and cleans them. He replaces them, then squints at us again.\n\n“We wanted to check the diamond is secure,” adds Wiggins. Sartori tells us it is and gestures to a safe near the locked window."
+    },
+    "23 WC": {
+      "address": "23 WC",
+      "text": "We speak to an opera singer, practising her scales in the open air. “You adorable ragamuffins!” she exclaims, “I do not know Gilly the Goat I'm afraid. Ask in The Unicorn.”"
+    },
+    "24 WC": {
+      "address": "24 WC",
+      "text": "We follow the crowds to the Ansidei Madonna. It is very large – perhaps 5 by 7 feet. Through the formidable locked and barred window, we see an arch going to a window in the Haymarket Theatre. A warden tells us only the Head Warden has access to the window keys."
+    },
+    "25 WC": {
+      "address": "25 WC",
+      "text": "“I think I saw Gilly loitering on Haymarket last week.”"
+    },
+    "26 WC": {
+      "address": "26 WC",
+      "text": "“Ah, Gilly the Ghost,” says police constable Griggs, who is stationed outside the bank. “She wouldn't rob Drummonds – she's a petty thief, nothing more.”"
+    },
+    "27 WC": {
+      "address": "27 WC",
+      "text": "No one can help us at the Metropole Hotel."
+    },
+    "28 WC": {
+      "address": "28 WC",
+      "baseText": "", 
+      "conditions": [
+        {
+          "check": "requiresLetter",
+          "letter": "B",
+          "promptIfFalse": "Requires Letter B before proceeding further here.",
+          "onSuccess": {
+            "text": "We spot Gilly picking up discarded rotten fruit and putting it in a bag. Then she buys a sailor's knife – the type normally used for gutting fish and cutting rope. As we follow her out of the market, she looks round, and seems to realise we're following her. A moment later, she's vanished.",
+            "updates": { 
+              "foundFruit": true,
+              "foundKnife": true
+            }
+          }
+        }
+      ]
+    },
+    "29 WC": {
+      "address": "29 WC",
+      "text": "“I know Gilly – we share a love of ale. We met just over two weeks ago when she fell onto me, burped, and asked if the Afghan War arches would be put up along Haymarket. She lodges next to a stable yard, in the house on the end of the row.”",
+      "circlesLetter": "A" 
+    },
+    "30 WC": {
+      "address": "30 WC",
+      "text": "“I know that thieving rascal. I saw her staggering up Bedford Street late one evening about two weeks ago.”"
+    },
+    "33 WC": {
+      "address": "33 WC",
+      "text": "“I'm ashamed to be her sister. Gilly blames The Haymarket for ruining her acting career, but it's her own fault. She can make amazing wigs and makeup, and acts so well, but she's never been able to resist taking other people's things. She took new lodging in August – said it's a ground floor room, end of the row, and mentioned something about the smell of horse manure.”",
+      "circlesLetter": "A" 
+    },
+    "68 WC": {
+      "address": "68 WC",
+      "baseText": "There is a row of lodgings at 68 WC. In the yard, pieces of rotten fruit lie next to a barrel marked with a chalk cross, as if they've been thrown at it.",
+      "conditions": [
+        {
+          "check": "requiresLetter",
+          "letter": "A",
+          "promptIfFalse": "You must have circled A to learn more here. You leave for now, but can come back later.",
+          "onSuccess": {
+            "text": "Ducking out of sight of a boy scooping up horse manure, we approach the house at the end of the row and stop outside a window. Just then, a woman leaves the house, counting money, and heads for the market at Covent Garden.\n\n“That’s her,” mutters Simpson. “And this is her lodging. The window is fastened inside but it looks weak. We need something to break it open.” “A crowbar or piece of pipe?” asks Tinker. “I find stuff like that all the time! I’m a mudlark, see, and traipse through river mud looking for bits to sell. We might find something north of the railway bridge.” He points to the south-east.",
+            "updates": {
+              "circlesLetter": "B"
+            },
+            "followUpConditions": [
+              {
+                "check": "requiresLetter",
+                "letter": "C",
+                "promptIfFalse": "You need something to break the window (Letter C). You must leave for now, but can come back later.",
+                "onSuccess": {
+                  "text": "“We’ll have one chance,” says Wiggins, “Do we know what to look for?”\n\n(Warning: Once you break in, you cannot return to this lodging.)",
+                  "actions": [
+                    {
+                      "id": "attempt_break_in_68wc",
+                      "text": "Attempt to break in",
+                      "consequences": {
+                        "locksLocation": true,
+                        "triggersSequence": "break_in_sequence_68wc"
+                      }
+                    },
+                    {
+                      "id": "leave_68wc_before_breakin",
+                      "text": "Leave for now",
+                      "consequences": {
+                        "endsInteraction": true
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "sequences": {
+        "break_in_sequence_68wc": {
+          "id": "break_in_sequence_68wc",
+          "text": "Inside, we find a pamphlet for Moby Dick with a drawing of a whale suspended by two ropes and ‘Saturday 6pm’ circled in pencil. Next to it are a wig and moustache. Simpson throws them into the fireplace and holds up a box of matches. “I sell matches on the street,” he says, as he strikes one and sets the fire blazing.",
+          "updates": {
+            "foundMobyDickPamphlet": true,
+            "foundWigMoustache": true,
+            "destroyedWigMoustache": true
+          },
+          "actions": [
+            {
+              "id": "choose_burn_item_68wc",
+              "text": "You have time to burn one more thing. Choose:",
+              "choices": [
+                { "id": "burn_warden_uniform", "text": "Warden's uniform" },
+                { "id": "burn_footman_uniform", "text": "Footman's uniform" },
+                { "id": "burn_cook_uniform", "text": "Cook's uniform" }
+              ],
+              "consequences": {
+                "recordsChoice": "item_burned_68wc",
+                "triggersSequence": "leave_after_burning_68wc"
+              }
+            }
+          ]
+        },
+        "leave_after_burning_68wc": {
+          "id": "leave_after_burning_68wc",
+          "text": "With the evidence gathered and an item destroyed, you quickly leave the lodging before anyone notices.",
+          "updates": {},
+          "actions": []
+        }
+      }
+    },
+    "90 WC": {
+      "address": "90 WC",
+      "text": "An arch crosses the Strand from a window of the Charing Cross Hotel to a wall of The Grand Hotel. From a scullery maid, we learn the window belongs to a room occupied by a retired military doctor."
+    },
+    "91 WC": {
+      "address": "91 WC",
+      "text": "One man says he saw Gilly in The Unicorn."
+    },
+    "92 WC": {
+      "address": "92 WC",
+      "baseText": "", 
+      "conditions": [
+        {
+          "check": "requiresLetter",
+          "letter": "B",
+          "promptIfFalse": "Requires Letter B before proceeding further here.",
+          "onSuccess": {
+            "text": "Welcome to the river, friends!” says Tinker, stepping into the mud. His legs disappear completely. With some uncertainty, we follow, grimacing as the cold sludge slips between our toes. Ten minutes later, Tinker shouts, and holds up a strip of metal.\n\nYou can return to locations to use new circled letters.",
+            "updates": { 
+              "circlesLetter": "C",
+              "foundMetalStrip": true
+            }
+          }
+        }
+      ]
+    },
+    "94 WC": {
+      "address": "94 WC",
+      "text": "The stage is set with a table, two chairs, and a teapot. Backstage, we find an actress with long ornate eyelashes, applying makeup. “Ah, that cunning rapscallion,” she says, “We've never employed her, and never will. I did see her on Maiden Lane last week, drunk.”"
+    },
+    "4 SW": {
+      "address": "4 SW",
+      "text": "Wiggins glances upwards and his jaw drops. Looking up, we see a huge plaster whale suspended above the stage by two ropes. “It’s for Moby Dick,” the theatre manager says. “Our most ambitious production to date. At the end, two stagehands climb up and lower it down.” He points at a rope ladder leading to a narrow balcony, which runs round the entire upper storey of the theatre. “And yes, we know Gilly Niles. She worked here from ’74 to December ’79, when we caught her stealing and got her sent to Millbank. She’s still bitter and angry, and has never come back. Not that she’d be welcome anyway – we can’t have her thieving from our patrons. And she’s a great actress, but we’d see through any disguise she could muster. Trust me, we’ve seen all her tricks.”",
+      "updatesGameState": { 
+        "confirmedMotiveLocation": true
+      }
+    },
+    "10 SW": {
+      "address": "10 SW",
+      "text": "“You can't come in here lads. Entering requires identification papers and 3 passwords.” And as far as we can see, all the windows are strong and securely locked."
+    },
+    "11 SW": {
+      "address": "11 SW",
+      "text": "An arch crosses from the Admiralty to a closed window of the War Office, and we can see a guard on the inside."
+    },
+    "13 SW": {
+      "address": "13 SW",
+      "text": "We manage to convince a junior constable by the name of Peterson to tell us about Gilly the Ghost. 'She's a petty thief,' he says. 'Spends most of her ill-gotten gains on ale. I can't see her pulling off any grand thefts, although she is cunning and devious. No idea where she's living.'"
+    },
+    "52 SW": {
+      "address": "52 SW",
+      "text": "A footman's uniform for the Colonial Institute went missing recently.",
+      "updatesGameState": { 
+        "confirmedFootmanUniformMissing": true
+      }
+    },
+    "85 SW": {
+      "address": "85 SW",
+      "text": "TURN THIS PAGE OVER ONLY WHEN YOU ARE READY TO ANSWER THE QUESTIONS."
+    },
+    "86 SW": {
+      "address": "86 SW",
+      "text": "The Colonial Institute contains books and papers concerning British colonies. It is open to the public but they refuse to let in a group of street children. An arch runs from an upper-storey window of the Institute to an open window of the theatre across the road. A kitchen girl is throwing out food waste. “The window keys are kept in the staff office,” she tells us. “I can use ’em if I so please, as can any of them that work here – footmen, librarians, and wardens.” As we leave, we see two maids carrying bags of uniforms away down the street, presumably to get them cleaned.",
+      "updatesGameState": { 
+        "visitedColonialInstitute": true
+      }
+    }
+  }
